@@ -73,38 +73,38 @@ void BfInterpreter::runCode() {
 
 	while (instructionPtr < this->_instructions.length()) {
 		switch (this->_instructions[instructionPtr]) {
-		case '>':
-			if (dataPtr < 30000)
-				dataPtr++;
-			break;
-		case '<':
-			if (dataPtr > 0)
-				dataPtr--;
-			break;
-		case '+':
-			if (data[dataPtr] < 255)
-				data[dataPtr]++;
-			break;
-		case '-':
-			if (data[dataPtr] > 0)
-				data[dataPtr]--;
-			break;
-		case '.':
-			cout << data[dataPtr];
-			break;
-		case ',':
-			char input;
-			cin >> input;
-			data[dataPtr] = input;
-			break;
-		case '[':
-			if (!data[dataPtr])
-				instructionPtr = matchingBrackets(this->_instructions, instructionPtr);
-			break;
-		case ']':
-			if (data[dataPtr])
-				instructionPtr = matchingBrackets(this->_instructions, instructionPtr) - 1;
-			break;
+			case '>':
+				if (dataPtr < 30000)
+					dataPtr++;
+				break;
+			case '<':
+				if (dataPtr > 0)
+					dataPtr--;
+				break;
+			case '+':
+				if (data[dataPtr] < 255)
+					data[dataPtr]++;
+				break;
+			case '-':
+				if (data[dataPtr] > 0)
+					data[dataPtr]--;
+				break;
+			case '.':
+				cout << data[dataPtr];
+				break;
+			case ',':
+				char input;
+				cin >> input;
+				data[dataPtr] = input;
+				break;
+			case '[':
+				if (!data[dataPtr])
+					instructionPtr = matchingBrackets(this->_instructions, instructionPtr);
+				break;
+			case ']':
+				if (data[dataPtr])
+					instructionPtr = matchingBrackets(this->_instructions, instructionPtr) - 1;
+				break;
 		}
 		instructionPtr++;
 	}

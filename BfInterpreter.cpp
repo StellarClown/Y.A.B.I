@@ -34,42 +34,44 @@ bool BfInterpreter::checkSyntax(const string& toCheck) const {
 }
 
 unsigned BfInterpreter::matchingBrackets(const string& cmd, const unsigned& pos) const {
-	if (cmd[pos] == '[') {
-		int count = 1;
-		for (unsigned i = pos + 1; i < cmd.length(); i++) {
-			if (cmd[i] == '[')
-				count++;
-			else if (cmd[i] == ']') {
-				count--;
-				if (count == 0)
-					return i;
+	switch (cmd[pos]) {
+		case '[': {
+			int32_t count = 1;
+			for (uint32_t i = pos + 1; i < cmd.length(); i++) {
+				if (cmd[i] == '[')
+					count++;
+				else if (cmd[i] == ']') {
+					count--;
+					if (count == 0)
+						return i;
+				}
 			}
 		}
-	}
-	else if (cmd[pos] == ']') {
-		int count = 1;
-		for (int i = pos - 1; i >= 0; i--) {
-			if (cmd[i] == ']')
-				count++;
-			else if (cmd[i] == '[') {
-				count--;
-				if (count == 0)
-					return i;
+		case ']': {
+			int32_t count = 1;
+			for (int32_t i = pos - 1; i >= 0; i--) {
+				if (cmd[i] == ']')
+					count++;
+				else if (cmd[i] == '[') {
+					count--;
+					if (count == 0)
+						return i;
+				}
 			}
 		}
 	}
 }
 
-void BfInterpreter::runCode() {
+void BfInterpreter::runCode() const {
 	if (this->errorSyntax) {
 		cerr << "[x] A syntax error was encountered in the code: Unable to interpret commands" << endl;
 		return;
 	}
 
 	//Assets
-	vector<char> data(30000, 0);
-	unsigned short dataPtr = 0;
-	unsigned instructionPtr = 0;
+	vector<uint8_t> data(30000, 0);
+	uint16_t dataPtr = 0;
+	uint32_t instructionPtr = 0;
 
 	while (instructionPtr < this->_instructions.length()) {
 		switch (this->_instructions[instructionPtr]) {
@@ -110,7 +112,21 @@ void BfInterpreter::runCode() {
 	}
 }
 
+
+/*
+
+				CONSTRUCTOR
+
+*/
 BfInterpreter::BfInterpreter(const string& commands) {
+	if (checkSyntax(commands)) {
+		this->_instructions = "";
+		this->errorSyntax = true;
+		cerr << "[x] Syntax error in code..." << endl;
+	} else
+		this->_instructions = commands;
+}
+BfInterpreter::BfInterpreter(const char* commands) {
 	if (checkSyntax(commands)) {
 		this->_instructions = "";
 		this->errorSyntax = true;
@@ -118,4 +134,41 @@ BfInterpreter::BfInterpreter(const string& commands) {
 	}
 	else
 		this->_instructions = commands;
+}
+BfInterpreter::BfInterpreter(const BfInterpreter& bf) {
+	if (bf.errorSyntax) {
+		this->errorSyntax = true;
+		this->_instructions = "";
+		cerr << "[x] You are trying to copy an object that has an incorrect instruction set..." << endl;
+	} else {
+		this->errorSyntax = bf.errorSyntax;
+		this->_instructions = bf._instructions;
+	}
+}
+
+
+/*
+
+				OPERATOR =
+
+*/
+void BfInterpreter::operator= (const string& s) {
+	if (checkSyntax(s)) {
+		this->_instructions = "";
+		this->errorSyntax = true;
+		cerr << "[x] Syntax error in code..." << endl;
+	} else {
+		this->_instructions = s;
+		this->errorSyntax = false;
+	}
+}
+void BfInterpreter::operator= (const char* s) {
+	if (checkSyntax(s)) {
+		this->_instructions = "";
+		this->errorSyntax = true;
+		cerr << "[x] Syntax error in code..." << endl;
+	} else {
+		this->_instructions = s;
+		this->errorSyntax = false;
+	}
 }

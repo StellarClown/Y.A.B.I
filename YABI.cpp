@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 	file.open(argv[1]);
 	while (file.good()) {
 		char c = file.get();
-		if ((int)c > 0)
+		if (((int)c > 0) && (c != '\n'))
 			instructions.push_back(c);
 	}
 	file.close();
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	//I start interpreting the code
-	BfInterpreter bf = { instructions };
+	BfInterpreter bf = instructions;
 	bf.runCode();
 
 	return 0;

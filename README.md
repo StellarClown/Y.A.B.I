@@ -4,9 +4,12 @@
 ## Instructions for Use
 - Compile the program with the following command:
   ```bash
-  g++ YABI.cpp BfInterpreter.cpp -o interpreter
+  mkdir build
+  cd build/
+  cmake ..
+  cmake --build . --config Release
   ```
 - Run the program as follows:
   ```bash
-  ./interpreter input_file.bf
+  .\build\Release\YABI.exe .\examples\input.bf
   ```

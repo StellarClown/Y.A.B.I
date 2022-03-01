@@ -35,30 +35,30 @@ bool BfInterpreter::checkSyntax(const string& toCheck) const {
 
 unsigned BfInterpreter::matchingBrackets(const string& cmd, const unsigned& pos) const {
 	switch (cmd[pos]) {
-	case '[': {
-		int32_t count = 1;
-		for (uint32_t i = pos + 1; i < cmd.length(); i++) {
-			if (cmd[i] == '[')
-				count++;
-			else if (cmd[i] == ']') {
-				count--;
-				if (count == 0)
-					return i;
+		case '[': {
+			int32_t count = 1;
+			for (uint32_t i = pos + 1; i < cmd.length(); i++) {
+				if (cmd[i] == '[')
+					count++;
+				else if (cmd[i] == ']') {
+					count--;
+					if (count == 0)
+						return i;
+				}
 			}
 		}
-	}
-	case ']': {
-		int32_t count = 1;
-		for (int32_t i = pos - 1; i >= 0; i--) {
-			if (cmd[i] == ']')
-				count++;
-			else if (cmd[i] == '[') {
-				count--;
-				if (count == 0)
-					return i;
+		case ']': {
+			int32_t count = 1;
+			for (int32_t i = pos - 1; i >= 0; i--) {
+				if (cmd[i] == ']')
+					count++;
+				else if (cmd[i] == '[') {
+					count--;
+					if (count == 0)
+						return i;
+				}
 			}
 		}
-	}
 	}
 }
 
@@ -75,38 +75,38 @@ void BfInterpreter::runCode() const {
 
 	while (instructionPtr < this->_instructions.length()) {
 		switch (this->_instructions[instructionPtr]) {
-		case '>':
-			if (dataPtr < 30000)
-				dataPtr++;
-			break;
-		case '<':
-			if (dataPtr > 0)
-				dataPtr--;
-			break;
-		case '+':
-			if (data[dataPtr] < 255)
-				data[dataPtr]++;
-			break;
-		case '-':
-			if (data[dataPtr] > 0)
-				data[dataPtr]--;
-			break;
-		case '.':
-			cout << data[dataPtr];
-			break;
-		case ',':
-			char input;
-			cin >> input;
-			data[dataPtr] = input;
-			break;
-		case '[':
-			if (!data[dataPtr])
-				instructionPtr = matchingBrackets(this->_instructions, instructionPtr);
-			break;
-		case ']':
-			if (data[dataPtr])
-				instructionPtr = matchingBrackets(this->_instructions, instructionPtr) - 1;
-			break;
+			case '>':
+				if (dataPtr < 30000)
+					dataPtr++;
+				break;
+			case '<':
+				if (dataPtr > 0)
+					dataPtr--;
+				break;
+			case '+':
+				if (data[dataPtr] < 255)
+					data[dataPtr]++;
+				break;
+			case '-':
+				if (data[dataPtr] > 0)
+					data[dataPtr]--;
+				break;
+			case '.':
+				cout << data[dataPtr];
+				break;
+			case ',':
+				char input;
+				cin >> input;
+				data[dataPtr] = input;
+				break;
+			case '[':
+				if (!data[dataPtr])
+					instructionPtr = matchingBrackets(this->_instructions, instructionPtr);
+				break;
+			case ']':
+				if (data[dataPtr])
+					instructionPtr = matchingBrackets(this->_instructions, instructionPtr) - 1;
+				break;
 		}
 		instructionPtr++;
 	}

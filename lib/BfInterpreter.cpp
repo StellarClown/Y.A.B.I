@@ -9,21 +9,21 @@ bool BfInterpreter::checkSyntax(const string& toCheck) const {
 	int squareBrackets = 0;
 	for (const char c : toCheck) {
 		switch (c) {
-		case '>':
-		case '<':
-		case '+':
-		case '-':
-		case '.':
-		case ',':
-			break;
-		case '[':
-			squareBrackets++;
-			break;
-		case ']':
-			squareBrackets--;
-			break;
-		default:
-			return true;
+			case '>':
+			case '<':
+			case '+':
+			case '-':
+			case '.':
+			case ',':
+				break;
+			case '[':
+				squareBrackets++;
+				break;
+			case ']':
+				squareBrackets--;
+				break;
+			default:
+				return true;
 		}
 	}
 	if (squareBrackets) {
